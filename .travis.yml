@@ -8,3 +8,15 @@ before_install:
 
 script:
   - docker run -e CI=true piergiggisc/docker-react npm test
+
+deploy:
+  provider: elasticbeanstalk  # posso scegliere altri provider (Google Cloud, DIgital Ocean, altro..)
+  region: "eu-west-3"
+  app: "docker-react"
+  env: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-eu-west-3-769301063172"    # il nome del bucket che trovo in S3
+  bucket_path: "docker-react"     # uguale ad app, è il nome del folder dentro il bucker creato durante il deploy (può non esistere ancora!)
+  on: 
+    branch: master                # esegue il deploy solo quando push su master ! quando push su altri branch non esegue deploy
+  access_key_id: $AWS_ACCESS_KEY  # uso le variabili d'ambiente invece che digitare direttamente qui
+  secret_access_key: "$AWS_SECRET_KEY"  # attenzione ai doppi apici 
